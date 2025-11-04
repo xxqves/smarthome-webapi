@@ -9,5 +9,6 @@ namespace SmHm.WebApi.Contracts
         string Description,
         RoomType RoomType,
         int Floor,
+        Guid UserId,
         List<Device> Devices);
 }

@@ -14,6 +14,10 @@ namespace SmHm.Persistence.PostgreSql.Entities
 
         public int Floor { get; set; }
 
+        public Guid UserId { get; set; }
+
         public List<DeviceEntity> Devices { get; set; } = [];
+
+        public UserEntity? User { get; set; }
     }
 }

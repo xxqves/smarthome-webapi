@@ -26,6 +26,11 @@ namespace SmHm.Persistence.PostgreSql.Configurations
                 .HasMany(r => r.Devices)
                 .WithOne(d => d.Room)
                 .HasForeignKey(d => d.RoomId);
+
+            builder
+                .HasOne(r => r.User)
+                .WithMany(u => u.Rooms)
+                .HasForeignKey(r => r.UserId);
         }
     }
 }

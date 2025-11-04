@@ -29,6 +29,7 @@ namespace SmHm.Persistence.PostgreSql.Repositories
                     r.Description,
                     r.RoomType,
                     r.Floor,
+                    r.UserId,
                     r.Devices
                     .Select(d => Device.Create(
                         d.Id,

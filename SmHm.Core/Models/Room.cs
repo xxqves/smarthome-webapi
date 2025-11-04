@@ -8,13 +8,14 @@ namespace SmHm.Core.Models
 
         public const int MAX_DESCRIPTION_LENGTH = 150;
 
-        private Room(Guid id, string name, string desc, RoomType roomType, int floor, List<Device> devices)
+        private Room(Guid id, string name, string desc, RoomType roomType, int floor, Guid userId, List<Device> devices)
         {
             Id = id;
             Name = name;
             Description = desc;
             RoomType = roomType;
             Floor = floor;
+            UserId = userId;
             Devices = devices;
         }
 
@@ -30,7 +31,9 @@ namespace SmHm.Core.Models
 
         public List<Device> Devices { get; } = [];
 
-        public static Room Create(Guid id, string name, string desc, RoomType roomType, int floor, List<Device> devices)
+        public Guid UserId { get; }
+
+        public static Room Create(Guid id, string name, string desc, RoomType roomType, int floor, Guid userId, List<Device> devices)
         {
             if (name.Length > MAX_NAME_LENGTH)
             {
@@ -42,7 +45,7 @@ namespace SmHm.Core.Models
                 throw new ArgumentException("Description length can not be more than 150 characters");
             }
 
-            var room = new Room(id, name, desc, roomType, floor, devices);
+            var room = new Room(id, name, desc, roomType, floor, userId, devices);
 
             return room;
         }

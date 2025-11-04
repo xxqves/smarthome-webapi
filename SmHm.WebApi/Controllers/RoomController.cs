@@ -27,6 +27,7 @@ namespace SmHm.WebApi.Controllers
                 r.Description,
                 r.RoomType,
                 r.Floor,
+                r.UserId,
                 r.Devices));
 
             return Ok(response);
@@ -41,6 +42,7 @@ namespace SmHm.WebApi.Controllers
                 request.Description,
                 request.RoomType,
                 request.Floor,
+                request.UserId,
                 new List<Device>());
 
             await _service.CreateRoom(room);

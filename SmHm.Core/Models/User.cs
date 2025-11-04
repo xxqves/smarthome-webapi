@@ -1,15 +1,16 @@
 ﻿namespace SmHm.Core.Models
 {
-    public class User
+    public sealed class User
     {
         public const int MAX_USERNAME_LENGTH = 12;
 
-        private User(Guid id, string userName, string email, string passwordHash)
+        private User(Guid id, string userName, string email, string passwordHash, List<Room> rooms)
         {
             Id = id;
             UserName = userName;
             Email = email;
             PasswordHash = passwordHash;
+            Rooms = rooms;
         }
 
         public Guid Id { get; }
@@ -20,14 +21,16 @@
 
         public string PasswordHash { get; } = string.Empty;
 
-        public static User Create(Guid id, string userName, string email, string passwordHash)
+        public List<Room> Rooms { get; } = [];
+
+        public static User Create(Guid id, string userName, string email, string passwordHash, List<Room> rooms)
         {
             if (userName.Length > MAX_USERNAME_LENGTH)
             {
                 throw new ArgumentException("Name length can not be more than 12 characters");
             }
 
-            return new User(id, userName, email, passwordHash);
+            return new User(id, userName, email, passwordHash, rooms);
         }
     }
 }

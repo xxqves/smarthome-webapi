@@ -12,10 +12,12 @@ namespace SmHm.WebApi.Controllers
     public class RoomController : ControllerBase
     {
         private readonly IRoomService _service;
+        private readonly IHttpContextAccessor _context;
 
-        public RoomController(IRoomService service)
+        public RoomController(IRoomService service, IHttpContextAccessor context)
         {
             _service = service;
+            _context = context;
         }
 
         [HttpGet("rooms/get/all")]
@@ -38,13 +40,19 @@ namespace SmHm.WebApi.Controllers
         [HttpPost("rooms/add")]
         public async Task<ActionResult<Guid>> CreateRoom([FromBody] RoomRequest request)
         {
+            var userIdClaim = _context.HttpContext?.User.FindFirst("userId")?.Value;
+            if (string.IsNullOrEmpty(userIdClaim) || !Guid.TryParse(userIdClaim, out var userId))
+            {
+                throw new UnauthorizedAccessException("User ID not found in token");
+            }
+
             var room = Room.Create(
                 Guid.NewGuid(),
                 request.Name,
                 request.Description,
                 request.RoomType,
                 request.Floor,
-                request.UserId,
+                Guid.Parse(userIdClaim),
                 new List<Device>());
 
             await _service.CreateRoom(room);

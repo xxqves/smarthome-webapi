@@ -48,6 +48,7 @@ namespace SmHm.WebApi.Configuration
             services.AddScoped<IDeviceRepository, DeviceRepository>();
 
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<IUserRepository, UserRepository>();
 
             services.AddScoped<IJwtProvider, JwtProvider>();

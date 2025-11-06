@@ -52,6 +52,7 @@ namespace SmHm.Persistence.PostgreSql.Repositories
                 Description = room.Description,
                 RoomType = room.RoomType,
                 Floor = room.Floor,
+                UserId = room.UserId,
                 Devices = new List<DeviceEntity>()
             };
 

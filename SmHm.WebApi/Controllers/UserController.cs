@@ -24,13 +24,13 @@ namespace SmHm.WebApi.Controllers
         }
 
         [HttpPost("users/login")]
-        public async Task<ActionResult<Guid>> Login([FromBody] LoginUserRequest request)
+        public async Task<ActionResult> Login([FromBody] LoginUserRequest request)
         {
             var token = await _service.Login(request.Email, request.Password);
 
             _context.HttpContext!.Response.Cookies.Append("jwt-service-staff", token);
 
-            return Ok(token);
+            return Ok();
         }
     }
 }

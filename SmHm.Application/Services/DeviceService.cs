@@ -13,24 +13,24 @@ namespace SmHm.Application.Services
             _repository = repository;
         }
 
-        public async Task<List<Device>> GetAllDevices()
+        public async Task<List<Device>> GetAllDevices(CancellationToken cancellationToken = default)
         {
-            return await _repository.Get();
+            return await _repository.Get(cancellationToken);
         }
 
-        public async Task<Guid> CreateDevice(Device device)
+        public async Task<Guid> CreateDevice(Device device, CancellationToken cancellationToken = default)
         {
-            return await _repository.Create(device);
+            return await _repository.Create(device, cancellationToken);
         }
 
-        public async Task<Guid> UpdateDevice(Guid id, string name, string desc, DeviceType deviceType, Guid roomId)
+        public async Task<Guid> UpdateDevice(Guid id, string name, string desc, DeviceType deviceType, Guid roomId, CancellationToken cancellationToken = default)
         {
-            return await _repository.Update(id, name, desc, deviceType, roomId);
+            return await _repository.Update(id, name, desc, deviceType, roomId, cancellationToken);
         }
 
-        public async Task<Guid> DeleteDevice(Guid id)
+        public async Task<Guid> DeleteDevice(Guid id, CancellationToken cancellationToken = default)
         {
-            return await _repository.Delete(id);
+            return await _repository.Delete(id, cancellationToken);
         }
     }
 }

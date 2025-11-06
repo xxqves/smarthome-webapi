@@ -17,7 +17,7 @@ namespace SmHm.Application.Services
             _jwtProvider = jwtProvider;
         }
 
-        public async Task<Guid> Register(string userName, string email, string password)
+        public async Task<Guid> Register(string userName, string email, string password, CancellationToken cancellationToken = default)
         {
             var hashedPassword = _passwordHasher.Generate(password);
 
@@ -28,12 +28,12 @@ namespace SmHm.Application.Services
                 hashedPassword,
                 new List<Room>());
 
-            return await _repository.Create(user);
+            return await _repository.Create(user, cancellationToken);
         }
 
-        public async Task<string> Login(string email, string password)
+        public async Task<string> Login(string email, string password, CancellationToken cancellationToken = default)
         {
-            var user = await _repository.GetByEmail(email);
+            var user = await _repository.GetByEmail(email, cancellationToken);
 
             var result = _passwordHasher.Verify(password, user.PasswordHash);
 

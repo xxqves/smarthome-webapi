@@ -14,7 +14,7 @@ namespace SmHm.Persistence.PostgreSql.Repositories
             _context = context;
         }
 
-        public async Task<Guid> Create(User user)
+        public async Task<Guid> Create(User user, CancellationToken cancellationToken = default)
         {
             var userEntity = new UserEntity
             {
@@ -25,17 +25,17 @@ namespace SmHm.Persistence.PostgreSql.Repositories
                 Rooms = new List<RoomEntity>()
             };
 
-            await _context.AddAsync(userEntity);
-            await _context.SaveChangesAsync();
+            await _context.AddAsync(userEntity, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
 
             return userEntity.Id;
         }
 
-        public async Task<User> GetByEmail(string email)
+        public async Task<User> GetByEmail(string email, CancellationToken cancellationToken = default)
         {
             var userEntity = await _context.Users
                 .AsNoTracking()
-                .FirstOrDefaultAsync(u => u.Email == email) ?? throw new Exception("Not found");
+                .FirstOrDefaultAsync(u => u.Email == email, cancellationToken) ?? throw new Exception("Not found");
 
             var user = User.Create(
                 userEntity!.Id,

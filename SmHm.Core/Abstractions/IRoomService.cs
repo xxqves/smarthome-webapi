@@ -5,9 +5,9 @@ namespace SmHm.Core.Abstractions
 {
     public interface IRoomService
     {
-        Task<Guid> CreateRoom(Room room);
-        Task<Guid> DeleteRoom(Guid id);
-        Task<List<Room>> GetAllRooms();
-        Task<Guid> UpdateRoom(Guid id, string name, string desc, RoomType roomType, int floor);
+        Task<Guid> CreateRoom(Room room, CancellationToken cancellationToken = default);
+        Task<Guid> DeleteRoom(Guid id, CancellationToken cancellationToken = default);
+        Task<List<Room>> GetAllRooms(CancellationToken cancellationToken = default);
+        Task<Guid> UpdateRoom(Guid id, string name, string desc, RoomType roomType, int floor, CancellationToken cancellationToken = default);
     }
 }

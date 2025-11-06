@@ -13,24 +13,24 @@ namespace SmHm.Application.Services
             _repository = repository;
         }
 
-        public async Task<List<Room>> GetAllRooms()
+        public async Task<List<Room>> GetAllRooms(CancellationToken cancellationToken = default)
         {
-            return await _repository.Get();
+            return await _repository.Get(cancellationToken);
         }
 
-        public async Task<Guid> CreateRoom(Room room)
+        public async Task<Guid> CreateRoom(Room room, CancellationToken cancellationToken = default)
         {
-            return await _repository.Create(room);
+            return await _repository.Create(room, cancellationToken);
         }
 
-        public async Task<Guid> UpdateRoom(Guid id, string name, string desc, RoomType roomType, int floor)
+        public async Task<Guid> UpdateRoom(Guid id, string name, string desc, RoomType roomType, int floor, CancellationToken cancellationToken = default)
         {
-            return await _repository.Update(id, name, desc, roomType, floor);
+            return await _repository.Update(id, name, desc, roomType, floor, cancellationToken);
         }
 
-        public async Task<Guid> DeleteRoom(Guid id)
+        public async Task<Guid> DeleteRoom(Guid id, CancellationToken cancellationToken = default)
         {
-            return await _repository.Delete(id);
+            return await _repository.Delete(id, cancellationToken);
         }
     }
 }

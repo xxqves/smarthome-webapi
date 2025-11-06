@@ -15,12 +15,12 @@ namespace SmHm.Persistence.PostgreSql.Repositories
             _context = context;
         }
 
-        public async Task<List<Room>> Get()
+        public async Task<List<Room>> Get(CancellationToken cancellationToken = default)
         {
             var roomEntities = await _context.Rooms
                 .AsNoTracking()
                 .Include(r => r.Devices)
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
 
             var rooms = roomEntities
                 .Select(r => Room.Create(
@@ -43,7 +43,7 @@ namespace SmHm.Persistence.PostgreSql.Repositories
             return rooms;
         }
 
-        public async Task<Guid> Create(Room room)
+        public async Task<Guid> Create(Room room, CancellationToken cancellationToken = default)
         {
             var roomEntity = new RoomEntity
             {
@@ -56,13 +56,13 @@ namespace SmHm.Persistence.PostgreSql.Repositories
                 Devices = new List<DeviceEntity>()
             };
 
-            await _context.Rooms.AddAsync(roomEntity);
-            await _context.SaveChangesAsync();
+            await _context.Rooms.AddAsync(roomEntity, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
 
             return roomEntity.Id;
         }
 
-        public async Task<Guid> Update(Guid id, string name, string desc, RoomType roomType, int floor)
+        public async Task<Guid> Update(Guid id, string name, string desc, RoomType roomType, int floor, CancellationToken cancellationToken = default)
         {
             await _context.Rooms
                 .Where(r => r.Id == id)
@@ -70,16 +70,16 @@ namespace SmHm.Persistence.PostgreSql.Repositories
                     .SetProperty(r => r.Name, r => name)
                     .SetProperty(r => r.Description, r => desc)
                     .SetProperty(r => r.RoomType, r => roomType)
-                    .SetProperty(r => r.Floor, r => floor));
+                    .SetProperty(r => r.Floor, r => floor), cancellationToken);
 
             return id;
         }
 
-        public async Task<Guid> Delete(Guid id)
+        public async Task<Guid> Delete(Guid id, CancellationToken cancellationToken = default)
         {
             await _context.Rooms
                 .Where(r => r.Id == id)
-                .ExecuteDeleteAsync();
+                .ExecuteDeleteAsync(cancellationToken);
 
             return id;
         }

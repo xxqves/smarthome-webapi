@@ -24,6 +24,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SmHm.Application\SmHm.Application.csproj" />
     <ProjectReference Include="..\SmHm.Core\SmHm.Core.csproj" />
+    <ProjectReference Include="..\SmHm.Infrastructure\SmHm.Infrastructure.csproj" />
     <ProjectReference Include="..\SmHm.Persistence.PostgreSql\SmHm.Persistence.PostgreSql.csproj" />
   </ItemGroup>
 

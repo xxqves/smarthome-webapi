@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SmHm.Application.Services;
 using SmHm.Core.Abstractions;
+using SmHm.Core.Abstractions.Auth;
+using SmHm.Infrastructure.Authentication;
 using SmHm.Persistence.PostgreSql;
 using SmHm.Persistence.PostgreSql.Repositories;
 
@@ -10,6 +12,8 @@ namespace SmHm.WebApi.Configuration
     {
         public static IServiceCollection AddConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
+            services.Configure<JwtOptions>(configuration.GetSection(nameof(JwtOptions)));
+
             services.AddSmHmDbContext(configuration);
 
             services.AddAbstractions();
@@ -34,6 +38,12 @@ namespace SmHm.WebApi.Configuration
 
             services.AddScoped<IDeviceService, DeviceService>();
             services.AddScoped<IDeviceRepository, DeviceRepository>();
+
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IUserRepository, UserRepository>();
+
+            services.AddScoped<IJwtProvider, JwtProvider>();
+            services.AddScoped<IPasswordHasher, PasswordHasher>();
 
             return services;
         }

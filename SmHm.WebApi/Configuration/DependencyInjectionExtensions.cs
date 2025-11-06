@@ -1,10 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using SmHm.Application.Services;
 using SmHm.Core.Abstractions;
 using SmHm.Core.Abstractions.Auth;
 using SmHm.Infrastructure.Authentication;
 using SmHm.Persistence.PostgreSql;
 using SmHm.Persistence.PostgreSql.Repositories;
+using System.Text;
 
 namespace SmHm.WebApi.Configuration
 {
@@ -14,11 +18,15 @@ namespace SmHm.WebApi.Configuration
         {
             services.Configure<JwtOptions>(configuration.GetSection(nameof(JwtOptions)));
 
+            services.AddApiAuthentication();
+
             services.AddSmHmDbContext(configuration);
 
             services.AddAbstractions();
 
             services.AddControllers();
+
+            services.AddHttpContextAccessor();
 
             return services.AddSwaggerGen();
         }
@@ -44,6 +52,40 @@ namespace SmHm.WebApi.Configuration
 
             services.AddScoped<IJwtProvider, JwtProvider>();
             services.AddScoped<IPasswordHasher, PasswordHasher>();
+
+            return services;
+        }
+
+        private static IServiceCollection AddApiAuthentication(this IServiceCollection services)
+        {
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+                {
+                    var serviceProvider = services.BuildServiceProvider();
+                    var jwtOptions = serviceProvider.GetRequiredService<IOptions<JwtOptions>>().Value;
+
+                    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                    {
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(
+                            Encoding.UTF8.GetBytes(jwtOptions.SecretKey))
+                    };
+
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnMessageReceived = context =>
+                        {
+                            context.Token = context.Request.Cookies["jwt-service-staff"];
+
+                            return Task.CompletedTask;
+                        }
+                    };
+                });
+
+            services.AddAuthorization();
 
             return services;
         }

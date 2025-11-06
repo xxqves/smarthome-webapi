@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SmHm.Core.Abstractions;
 using SmHm.Core.Models;
 using SmHm.WebApi.Contracts;
 
 namespace SmHm.WebApi.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/")]
     public class DeviceController : ControllerBase

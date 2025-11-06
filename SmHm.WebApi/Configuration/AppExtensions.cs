@@ -18,6 +18,9 @@
                 await next();
             });
 
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.MapControllers();
 
             return app;

@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+    rabbitmq:
+        image: rabbitmq:3-management
+        hostname: rabbitmq
+        restart: always
+        container_name: smhm-rabbitmq
+        ports:
+            - "5672:5672"
+            - "15672:15672"
+        environment:
+            - RABBITMQ_DEFAULT_USER=rmuser
+            - RABBITMQ_DEFAULT_PASS=rmpassword
+            - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbit disk_free_limit 262144000
+        volumes:
+            - rabbitmq_data:/var/lib/rabbitmq
+
+volumes:
+    rabbitmq_data:    

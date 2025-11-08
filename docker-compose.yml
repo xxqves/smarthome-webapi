@@ -1,20 +1,30 @@
 version: '3.8'
 
 services:
-    rabbitmq:
-        image: rabbitmq:3-management
-        hostname: rabbitmq
-        restart: always
-        container_name: smhm-rabbitmq
-        ports:
-            - "5672:5672"
-            - "15672:15672"
-        environment:
-            - RABBITMQ_DEFAULT_USER=rmuser
-            - RABBITMQ_DEFAULT_PASS=rmpassword
-            - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbit disk_free_limit 262144000
-        volumes:
-            - rabbitmq_data:/var/lib/rabbitmq
+  smhmwebapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    container_name: smhm_web_api
+    depends_on:
+      - db
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__SmartHomeDbContext=Host=localhost;Database=SmartHomeDb;Username=postgres;Password=140779
+      
+  db:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 140779
+      POSTGRES_DB: smhm_database
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    container_name: db_postgresql_container
 
 volumes:
-    rabbitmq_data:    
+  db_data:

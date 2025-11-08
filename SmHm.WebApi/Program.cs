@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using SmHm.Persistence.PostgreSql;
 using SmHm.WebApi.Configuration;
 
 namespace SmHm.WebApi
@@ -11,6 +13,12 @@ namespace SmHm.WebApi
             builder.Services.AddConfiguration(builder.Configuration);
 
             var app = builder.Build();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<SmartHomeDbContext>();
+                dbContext.Database.Migrate();
+            }
 
             app.UseApplicationSpec();
 

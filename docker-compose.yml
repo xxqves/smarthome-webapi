@@ -12,7 +12,7 @@ services:
       - db
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - ConnectionStrings__SmartHomeDbContext=Host=db;Database=SmartHomeDb;Username=postgres;Password=140779
+      - ConnectionStrings__SmartHomeDbContext=Host=db;Database=smhm_database;Username=postgres;Password=140779
       
   db:
     image: postgres:latest

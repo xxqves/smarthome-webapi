@@ -5,6 +5,9 @@ services:
         dockerfile: Dockerfile
     ports:
         - "8080:8080"
+    environment:
+        - ASPNETCORE_ENVIRONMENT=Production
+        - ConnectionStrings__SmartHomeDbContext=Host=db;Database=smhm_database;Username=postgres;Password=140779
     container_name: smhm_web_api
     depends_on:
      db:

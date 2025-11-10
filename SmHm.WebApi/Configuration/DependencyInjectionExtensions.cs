@@ -35,7 +35,8 @@ namespace SmHm.WebApi.Configuration
         {
             return services.AddDbContext<SmartHomeDbContext>(options =>
             {
-                options.UseNpgsql(configuration.GetConnectionString(nameof(SmartHomeDbContext)));
+                //options.UseNpgsql(configuration.GetConnectionString(nameof(SmartHomeDbContext)));
+                options.UseNpgsql("Host=db;Port=5432;Database=smhm_database;Username=postgres;Password=140779");
             });
         }
 

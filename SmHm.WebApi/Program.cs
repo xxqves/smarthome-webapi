@@ -14,13 +14,13 @@ namespace SmHm.WebApi
 
             var app = builder.Build();
 
+            app.UseApplicationSpec();
+
             using (var scope = app.Services.CreateScope())
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<SmartHomeDbContext>();
                 dbContext.Database.Migrate();
             }
-
-            app.UseApplicationSpec();
 
             app.Run();
         }

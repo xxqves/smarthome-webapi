@@ -13,13 +13,11 @@ namespace SmHm.WebApi.Controllers
     {
         private readonly IRoomService _service;
         private readonly ICurrentUserService _currUserService;
-        private readonly IHttpContextAccessor _context;
 
-        public RoomController(IRoomService service, ICurrentUserService currUserService, IHttpContextAccessor context)
+        public RoomController(IRoomService service, ICurrentUserService currUserService)
         {
             _service = service;
             _currUserService = currUserService;
-            _context = context;
         }
 
         [HttpGet("rooms/get/all")]

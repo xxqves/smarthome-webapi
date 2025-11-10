@@ -12,6 +12,8 @@ services:
     depends_on:
      db:
       condition: service_healthy
+     rabbitmq:
+      condition: service_healthy
 
   db:
     image: postgres:17
@@ -29,6 +31,27 @@ services:
     volumes:
         - db_data:/var/lib/postgresql/data
     container_name: db_postgresql_container
+    
+  rabbitmq:
+   image: rabbitmq:3-management
+   hostname: rabbitmq
+   restart: always
+   container_name: smhm-rabbitmq
+   ports:
+       - "5672:5672"
+       - "15672:15672"
+   environment:
+       - RABBITMQ_DEFAULT_USER=rmuser
+       - RABBITMQ_DEFAULT_PASS=rmpassword
+       - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbit disk_free_limit 262144000
+   healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+   volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
 
 volumes:
     db_data:
+    rabbitmq_data:

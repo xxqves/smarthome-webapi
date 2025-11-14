@@ -5,7 +5,9 @@ using Microsoft.IdentityModel.Tokens;
 using SmHm.Application.Services;
 using SmHm.Core.Abstractions;
 using SmHm.Core.Abstractions.Auth;
+using SmHm.Core.Abstractions.Messaging;
 using SmHm.Infrastructure.Authentication;
+using SmHm.Infrastructure.Messaging;
 using SmHm.Persistence.PostgreSql;
 using SmHm.Persistence.PostgreSql.Repositories;
 using System.Text;
@@ -41,6 +43,8 @@ namespace SmHm.WebApi.Configuration
 
         private static IServiceCollection AddAbstractions(this IServiceCollection services)
         {
+            services.AddSingleton<IRabbitMqMessageBus, RabbitMqMessageBus>();
+
             services.AddScoped<IRoomService, RoomService>();
             services.AddScoped<IRoomRepository, RoomRepository>();
 

@@ -8,8 +8,12 @@ namespace SmHm.NotificationService
         public static async Task Main(string[] args)
         {
             IHost host = Host.CreateDefaultBuilder(args)
-                .ConfigureServices(services =>
+                .ConfigureServices((context, services) =>
                 {
+                    IConfiguration configuration = context.Configuration;
+
+                    services.Configure<RabbitMqOptions>(configuration!.GetSection(nameof(RabbitMqOptions)));
+
                     services.AddSingleton<INotificationHandler, EmailNotificationHandler>();
                     services.AddHostedService<NotificationWorker>();
                 })

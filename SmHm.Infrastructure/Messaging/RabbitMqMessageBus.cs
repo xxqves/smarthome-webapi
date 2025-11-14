@@ -1,4 +1,5 @@
-﻿using RabbitMQ.Client;
+﻿using Microsoft.Extensions.Options;
+using RabbitMQ.Client;
 using SmHm.Core.Abstractions.Messaging;
 using System.Text;
 using System.Text.Json;
@@ -7,18 +8,21 @@ namespace SmHm.Infrastructure.Messaging
 {
     public class RabbitMqMessageBus : IRabbitMqMessageBus
     {
-        private readonly string _hostname = "localhost";
         private readonly string _queueName = "user_registered";
-        private readonly string _username = "rmuser";
-        private readonly string _password = "rmpassword";
+        private readonly RabbitMqOptions _options;
+
+        public RabbitMqMessageBus(IOptions<RabbitMqOptions> options)
+        {
+            _options = options.Value;
+        }
 
         public async Task PublishAsync<T>(T message, CancellationToken cancellationToken = default)
         {
             var factory = new ConnectionFactory()
             {
-                HostName = _hostname,
-                UserName = _username,
-                Password = _password
+                HostName = _options.HostName,
+                UserName = _options.UserName,
+                Password = _options.Password
             };
 
             using var connection = await factory.CreateConnectionAsync(cancellationToken);

@@ -1,25 +1,23 @@
-﻿using RabbitMQ;
+﻿using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using SmHm.NotificationService.DTO;
 using SmHm.NotificationService.Interfaces;
+using SmHm.NotificationService.Services;
 using System.Text;
-using System.Text.Json;
 
 namespace SmHm.NotificationService
 {
     public class NotificationWorker : BackgroundService
     {
-        private readonly string _hostname = "localhost";
         private readonly string _queueName = "user_registered";
-        private readonly string _username = "rmuser";
-        private readonly string _password = "rmpassword";
         private readonly ILogger<NotificationWorker> _logger;
+        private readonly RabbitMqOptions _options;
         private readonly INotificationHandler _notificationHandler;
 
-        public NotificationWorker(ILogger<NotificationWorker> logger, INotificationHandler notificationHandler)
+        public NotificationWorker(ILogger<NotificationWorker> logger, IOptions<RabbitMqOptions> options, INotificationHandler notificationHandler)
         {
             _logger = logger;
+            _options = options.Value;
             _notificationHandler = notificationHandler;
         }
 
@@ -27,9 +25,9 @@ namespace SmHm.NotificationService
         {
             var factory = new ConnectionFactory()
             {
-                HostName = _hostname,
-                UserName = _username,
-                Password = _password
+                HostName = _options.HostName,
+                UserName = _options.UserName,
+                Password = _options.Password
             };
 
             using var connection = await factory.CreateConnectionAsync(stoppingToken);

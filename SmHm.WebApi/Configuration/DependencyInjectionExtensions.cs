@@ -20,6 +20,8 @@ namespace SmHm.WebApi.Configuration
         {
             services.Configure<JwtOptions>(configuration.GetSection(nameof(JwtOptions)));
 
+            services.Configure<RabbitMqOptions>(configuration.GetSection(nameof(RabbitMqOptions)));
+
             services.AddApiAuthentication();
 
             services.AddSmHmDbContext(configuration);

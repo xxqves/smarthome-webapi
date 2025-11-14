@@ -1,4 +1,5 @@
-﻿using SmHm.NotificationService.DTO;
+﻿using Microsoft.Extensions.Options;
+using SmHm.NotificationService.DTO;
 using SmHm.NotificationService.Interfaces;
 using System.Text.Json;
 

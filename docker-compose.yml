@@ -8,12 +8,29 @@ services:
     environment:
         - ASPNETCORE_ENVIRONMENT=Production
         - ConnectionStrings__SmartHomeDbContext=Host=db;Database=smhm_database;Username=postgres;Password=140779
+        - RabbitMqOptions__HostName=rabbitmq 
+        - RabbitMqOptions__UserName=rmuser 
+        - RabbitMqOptions__Password=rmpassword 
     container_name: smhm_web_api
     depends_on:
      db:
       condition: service_healthy
      rabbitmq:
       condition: service_healthy
+
+  notificationservice:
+   build:
+    context: ./SmHm.NotificationService
+    dockerfile: Dockerfile
+   environment:
+       - ASPNETCORE_ENVIRONMENT=Production
+       - RabbitMqOptions__HostName=rabbitmq 
+       - RabbitMqOptions__UserName=rmuser 
+       - RabbitMqOptions__Password=rmpassword 
+   container_name: notification_service
+   depends_on:
+    rabbitmq:
+     condition: service_healthy
 
   db:
     image: postgres:17

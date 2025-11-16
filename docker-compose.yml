@@ -8,7 +8,7 @@ services:
     environment:
         - ASPNETCORE_ENVIRONMENT=Production
         - ConnectionStrings__SmartHomeDbContext=Host=db;Database=smhm_database;Username=postgres;Password=140779
-        - RabbitMqOptions__HostName=rabbitmq 
+        - RabbitMqOptions__HostName=rabbitmq
         - RabbitMqOptions__UserName=rmuser 
         - RabbitMqOptions__Password=rmpassword 
     container_name: smhm_web_api

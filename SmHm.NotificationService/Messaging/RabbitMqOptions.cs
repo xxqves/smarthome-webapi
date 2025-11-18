@@ -1,4 +1,4 @@
-﻿namespace SmHm.NotificationService.Services
+﻿namespace SmHm.NotificationService.Messaging
 {
     public class RabbitMqOptions
     {

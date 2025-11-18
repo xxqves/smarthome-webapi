@@ -1,7 +1,7 @@
 using MassTransit;
 using Microsoft.Extensions.Options;
 using SmHm.NotificationService.Consumers;
-using SmHm.NotificationService.Services;
+using SmHm.NotificationService.Messaging;
 
 namespace SmHm.NotificationService
 {

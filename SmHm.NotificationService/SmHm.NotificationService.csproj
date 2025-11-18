@@ -16,10 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\SmHm.Contracts\SmHm.Contracts.csproj" />
   </ItemGroup>
 </Project>

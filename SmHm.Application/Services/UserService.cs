@@ -9,13 +9,15 @@ namespace SmHm.Application.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _repository;
+        private readonly ICurrentUserService _currentUserService;
         private readonly IPasswordHasher _passwordHasher;
         private readonly IJwtProvider _jwtProvider;
         private readonly IMessageBus _messageBus;
 
-        public UserService(IUserRepository repository, IPasswordHasher passwordHasher, IJwtProvider jwtProvider, IMessageBus messageBus)
+        public UserService(IUserRepository repository, ICurrentUserService currentUserService, IPasswordHasher passwordHasher, IJwtProvider jwtProvider, IMessageBus messageBus)
         {
             _repository = repository;
+            _currentUserService = currentUserService;
             _passwordHasher = passwordHasher;
             _jwtProvider = jwtProvider;
             _messageBus = messageBus;
@@ -43,6 +45,11 @@ namespace SmHm.Application.Services
                 
         public async Task<string> Login(string email, string password, CancellationToken cancellationToken = default)
         {
+            if (_currentUserService.IsAuthenticated)
+            {
+                throw new Exception("You have already logged in");
+            }
+
             var user = await _repository.GetByEmail(email, cancellationToken);
 
             var result = _passwordHasher.Verify(password, user.PasswordHash);

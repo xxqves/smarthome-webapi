@@ -1,4 +1,4 @@
-﻿namespace SmHm.Core.Events
+﻿namespace SmHm.Contracts.Events.UserEvents
 {
     public record UserRegistered(
         Guid UserId,

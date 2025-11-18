@@ -1,4 +1,6 @@
-using SmHm.NotificationService.Interfaces;
+using MassTransit;
+using Microsoft.Extensions.Options;
+using SmHm.NotificationService.Consumers;
 using SmHm.NotificationService.Services;
 
 namespace SmHm.NotificationService
@@ -14,8 +16,26 @@ namespace SmHm.NotificationService
 
                     services.Configure<RabbitMqOptions>(configuration!.GetSection(nameof(RabbitMqOptions)));
 
-                    services.AddSingleton<INotificationHandler, EmailNotificationHandler>();
-                    services.AddHostedService<NotificationWorker>();
+                    services.AddMassTransit(cfg =>
+                    {
+                        cfg.AddConsumer<UserRegisteredConsumer>();
+
+                        cfg.UsingRabbitMq((context, bus) =>
+                        {
+                            var options = context.GetRequiredService<IOptions<RabbitMqOptions>>().Value;
+
+                            bus.Host(options.HostName, "/", h =>
+                            {
+                                h.Username(options.UserName);
+                                h.Password(options.Password);
+                            });
+
+                            bus.ReceiveEndpoint("notification_user_registered_queue", e =>
+                            {
+                                e.ConfigureConsumer<UserRegisteredConsumer>(context);
+                            });
+                        });
+                    });
                 })
                 .Build();
 

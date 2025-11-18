@@ -1,7 +1,7 @@
-﻿using SmHm.Core.Abstractions;
+﻿using SmHm.Contracts.Events.UserEvents;
+using SmHm.Core.Abstractions;
 using SmHm.Core.Abstractions.Auth;
 using SmHm.Core.Abstractions.Messaging;
-using SmHm.Core.Events;
 using SmHm.Core.Models;
 
 namespace SmHm.Application.Services
@@ -11,14 +11,14 @@ namespace SmHm.Application.Services
         private readonly IUserRepository _repository;
         private readonly IPasswordHasher _passwordHasher;
         private readonly IJwtProvider _jwtProvider;
-        private readonly IRabbitMqMessageBus _rabbitmqMessageBus;
+        private readonly IMessageBus _messageBus;
 
-        public UserService(IUserRepository repository, IPasswordHasher passwordHasher, IJwtProvider jwtProvider, IRabbitMqMessageBus rabbitmqMessageBus)
+        public UserService(IUserRepository repository, IPasswordHasher passwordHasher, IJwtProvider jwtProvider, IMessageBus messageBus)
         {
             _repository = repository;
             _passwordHasher = passwordHasher;
             _jwtProvider = jwtProvider;
-            _rabbitmqMessageBus = rabbitmqMessageBus;
+            _messageBus = messageBus;
         }
 
         public async Task<Guid> Register(string userName, string email, string password, CancellationToken cancellationToken = default)
@@ -36,7 +36,7 @@ namespace SmHm.Application.Services
 
             var @event = new UserRegistered(user.Id, user.Email, DateTime.UtcNow);
 
-            await _rabbitmqMessageBus.PublishAsync(@event, cancellationToken);
+            await _messageBus.PublishAsync(@event, cancellationToken);
 
             return userId;
         }

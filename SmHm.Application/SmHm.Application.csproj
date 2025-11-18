@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SmHm.Contracts\SmHm.Contracts.csproj" />
     <ProjectReference Include="..\SmHm.Persistence.PostgreSql\SmHm.Persistence.PostgreSql.csproj" />
   </ItemGroup>
 

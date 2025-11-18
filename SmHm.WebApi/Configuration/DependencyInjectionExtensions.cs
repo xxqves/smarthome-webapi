@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using MassTransit;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -22,6 +23,8 @@ namespace SmHm.WebApi.Configuration
 
             services.Configure<RabbitMqOptions>(configuration.GetSection(nameof(RabbitMqOptions)));
 
+            services.AddMassTransitRabbitMq();
+
             services.AddApiAuthentication();
 
             services.AddSmHmDbContext(configuration);
@@ -43,10 +46,29 @@ namespace SmHm.WebApi.Configuration
             });
         }
 
+        private static IServiceCollection AddMassTransitRabbitMq(this IServiceCollection services)
+        {
+            services.AddMassTransit(cfg =>
+            {
+                cfg.UsingRabbitMq((context, config) =>
+                {
+                    var rabbitMqOptions = context.GetRequiredService<IOptions<RabbitMqOptions>>().Value;
+
+                    config.Host(rabbitMqOptions.HostName, "/", h =>
+                    {
+                        h.Username(rabbitMqOptions.UserName);
+                        h.Password(rabbitMqOptions.Password);
+                    });
+                });
+            });
+
+            services.AddScoped<IMessageBus, MassTransitMessageBus>();
+
+            return services;
+        }
+
         private static IServiceCollection AddAbstractions(this IServiceCollection services)
         {
-            services.AddSingleton<IRabbitMqMessageBus, RabbitMqMessageBus>();
-
             services.AddScoped<IRoomService, RoomService>();
             services.AddScoped<IRoomRepository, RoomRepository>();
 

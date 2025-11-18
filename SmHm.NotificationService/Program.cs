@@ -20,6 +20,8 @@ namespace SmHm.NotificationService
                     {
                         cfg.AddConsumer<UserRegisteredConsumer>();
 
+                        cfg.AddConsumer<UserLoggedInConsumer>();
+
                         cfg.UsingRabbitMq((context, bus) =>
                         {
                             var options = context.GetRequiredService<IOptions<RabbitMqOptions>>().Value;
@@ -33,6 +35,11 @@ namespace SmHm.NotificationService
                             bus.ReceiveEndpoint("notification_user_registered_queue", e =>
                             {
                                 e.ConfigureConsumer<UserRegisteredConsumer>(context);
+                            });
+
+                            bus.ReceiveEndpoint("notification_user_logged_queue", e =>
+                            {
+                                e.ConfigureConsumer<UserLoggedInConsumer>(context);
                             });
                         });
                     });

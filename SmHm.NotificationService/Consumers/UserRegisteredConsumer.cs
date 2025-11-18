@@ -14,7 +14,7 @@ namespace SmHm.NotificationService.Consumers
 
         public Task Consume(ConsumeContext<UserRegistered> context)
         {
-            _logger.LogInformation($"Получено сообщение: {context.Message}");
+            _logger.LogInformation($"Получено сообщение регистрации: {context.Message}");
 
             return Task.CompletedTask;
         }

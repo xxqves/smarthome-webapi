@@ -54,6 +54,10 @@ namespace SmHm.Application.Services
 
             var token = _jwtProvider.GenerateToken(user);
 
+            var @event = new UserLoggedIn(user.Id, user.UserName, token, DateTime.UtcNow);
+
+            await _messageBus.PublishAsync(@event, cancellationToken);
+
             return token;
         }
     }

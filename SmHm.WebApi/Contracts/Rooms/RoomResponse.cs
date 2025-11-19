@@ -1,7 +1,7 @@
 ﻿using SmHm.Core.Enums;
 using SmHm.Core.Models;
 
-namespace SmHm.WebApi.Contracts
+namespace SmHm.WebApi.Contracts.Rooms
 {
     public record RoomResponse(
         Guid Id,

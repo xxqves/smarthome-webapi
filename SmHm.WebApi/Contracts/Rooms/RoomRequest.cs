@@ -1,6 +1,6 @@
 ﻿using SmHm.Core.Enums;
 
-namespace SmHm.WebApi.Contracts
+namespace SmHm.WebApi.Contracts.Rooms
 {
     public record RoomRequest(
         string Name,

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SmHm.Core.Abstractions;
-using SmHm.WebApi.Contracts;
+using SmHm.WebApi.Contracts.Users;
 
 namespace SmHm.WebApi.Controllers
 {

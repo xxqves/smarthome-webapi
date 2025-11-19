@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SmHm.Core.Abstractions;
 using SmHm.Core.Models;
-using SmHm.WebApi.Contracts;
+using SmHm.WebApi.Contracts.Devices;
 
 namespace SmHm.WebApi.Controllers
 {

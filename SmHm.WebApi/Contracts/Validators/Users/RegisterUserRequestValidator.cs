@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
+using SmHm.WebApi.Contracts.Users;
 
-namespace SmHm.WebApi.Contracts.Validators
+namespace SmHm.WebApi.Contracts.Validators.Users
 {
     public class RegisterUserRequestValidator : AbstractValidator<RegisterUserRequest>
     {

@@ -1,4 +1,4 @@
-﻿namespace SmHm.WebApi.Contracts
+﻿namespace SmHm.WebApi.Contracts.Users
 {
     public record RegisterUserRequest(
         string UserName,

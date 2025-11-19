@@ -1,8 +1,10 @@
-﻿using MassTransit;
+﻿using FluentValidation;
+using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 using SmHm.Application.Services;
 using SmHm.Core.Abstractions;
 using SmHm.Core.Abstractions.Auth;
@@ -19,15 +21,13 @@ namespace SmHm.WebApi.Configuration
     {
         public static IServiceCollection AddConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
-            services.Configure<JwtOptions>(configuration.GetSection(nameof(JwtOptions)));
+            services.AddMassTransitRabbitMq(configuration);
 
-            services.Configure<RabbitMqOptions>(configuration.GetSection(nameof(RabbitMqOptions)));
-
-            services.AddMassTransitRabbitMq();
-
-            services.AddApiAuthentication();
+            services.AddApiAuthentication(configuration);
 
             services.AddSmHmDbContext(configuration);
+
+            services.AddValidators();
 
             services.AddAbstractions();
 
@@ -46,8 +46,10 @@ namespace SmHm.WebApi.Configuration
             });
         }
 
-        private static IServiceCollection AddMassTransitRabbitMq(this IServiceCollection services)
+        private static IServiceCollection AddMassTransitRabbitMq(this IServiceCollection services, IConfiguration configuration)
         {
+            services.Configure<RabbitMqOptions>(configuration.GetSection(nameof(RabbitMqOptions)));
+
             services.AddMassTransit(cfg =>
             {
                 cfg.UsingRabbitMq((context, config) =>
@@ -85,8 +87,19 @@ namespace SmHm.WebApi.Configuration
             return services;
         }
 
-        private static IServiceCollection AddApiAuthentication(this IServiceCollection services)
+        private static IServiceCollection AddValidators(this IServiceCollection services)
         {
+            services.AddValidatorsFromAssemblyContaining<Program>();
+
+            services.AddFluentValidationAutoValidation();
+
+            return services;
+        }
+
+        private static IServiceCollection AddApiAuthentication(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.Configure<JwtOptions>(configuration.GetSection(nameof(JwtOptions)));
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
                 {

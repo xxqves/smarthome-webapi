@@ -47,7 +47,7 @@ namespace SmHm.Application.Services
         {
             if (_currentUserService.IsAuthenticated)
             {
-                throw new Exception("You have already logged in");
+                throw new Exception("You have already logged in.");
             }
 
             var user = await _repository.GetByEmail(email, cancellationToken);
@@ -56,7 +56,7 @@ namespace SmHm.Application.Services
 
             if (result == false)
             {
-                throw new Exception("Failed to login");
+                throw new Exception("Failed to login. Password is wrong.");
             }
 
             var token = _jwtProvider.GenerateToken(user);

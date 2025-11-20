@@ -19,7 +19,7 @@ namespace SmHm.Application.Services
                 var userIdClaim = _context.HttpContext?.User.FindFirst("userId")?.Value;
                 if (string.IsNullOrEmpty(userIdClaim) || !Guid.TryParse(userIdClaim, out var userId))
                 {
-                    throw new UnauthorizedAccessException("User ID not found in token");
+                    throw new UnauthorizedAccessException("User ID not found in token.");
                 }
                 return userId;
             }

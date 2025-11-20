@@ -37,17 +37,15 @@ namespace SmHm.Core.Models
         {
             if (name.Length > MAX_NAME_LENGTH)
             {
-                throw new ArgumentException("Name length can not be more than 50 characters");
+                throw new ArgumentException($"Name length must not exceed {MAX_NAME_LENGTH} characters.");
             }
 
             if (desc.Length > MAX_DESCRIPTION_LENGTH)
             {
-                throw new ArgumentException("Description length can not be more than 150 characters");
+                throw new ArgumentException($"Description length must not exceed {MAX_DESCRIPTION_LENGTH} characters.");
             }
 
-            var room = new Room(id, name, desc, roomType, floor, userId, devices);
-
-            return room;
+            return new Room(id, name, desc, roomType, floor, userId, devices);
         }
     }
 }

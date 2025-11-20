@@ -2,7 +2,7 @@
 {
     public sealed class User
     {
-        public const int MAX_USERNAME_LENGTH = 12;
+        public const int MAX_USERNAME_LENGTH = 18;
 
         private User(Guid id, string userName, string email, string passwordHash, List<Room> rooms)
         {
@@ -27,7 +27,7 @@
         {
             if (userName.Length > MAX_USERNAME_LENGTH)
             {
-                throw new ArgumentException("Name length can not be more than 12 characters");
+                throw new ArgumentException($"User Name must not exceed {MAX_USERNAME_LENGTH} characters.");
             }
 
             return new User(id, userName, email, passwordHash, rooms);

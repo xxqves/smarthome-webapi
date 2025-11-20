@@ -56,7 +56,7 @@ namespace SmHm.Application.Services
 
             if (result == false)
             {
-                throw new Exception("Failed to login. Password is wrong.");
+                throw new Exception("Failed to login. Email or Password is wrong.");
             }
 
             var token = _jwtProvider.GenerateToken(user);

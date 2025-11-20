@@ -7,10 +7,12 @@ namespace SmHm.Application.Services
     public class DeviceService : IDeviceService
     {
         private readonly IDeviceRepository _repository;
+        private readonly IRoomService _roomService;
 
-        public DeviceService(IDeviceRepository repository)
+        public DeviceService(IDeviceRepository repository, IRoomService roomService)
         {
             _repository = repository;
+            _roomService = roomService;
         }
 
         public async Task<List<Device>> GetAllDevices(CancellationToken cancellationToken = default)

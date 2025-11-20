@@ -43,6 +43,31 @@ namespace SmHm.Persistence.PostgreSql.Repositories
             return rooms;
         }
 
+        public async Task<Room> GetById(Guid id, CancellationToken cancellationToken = default)
+        {
+            var roomEntity = await _context.Rooms
+                .AsNoTracking()
+                .FirstOrDefaultAsync(r => r.Id == id, cancellationToken);
+
+            var room = Room.Create(
+                roomEntity!.Id,
+                roomEntity.Name,
+                roomEntity.Description,
+                roomEntity.RoomType,
+                roomEntity.Floor,
+                roomEntity.UserId,
+                roomEntity.Devices
+                .Select(d => Device.Create(
+                    d.Id,
+                    d.Name,
+                    d.Description,
+                    d.DeviceType,
+                    d.RoomId))
+                .ToList());
+
+            return room;
+        }
+
         public async Task<Guid> Create(Room room, CancellationToken cancellationToken = default)
         {
             var roomEntity = new RoomEntity

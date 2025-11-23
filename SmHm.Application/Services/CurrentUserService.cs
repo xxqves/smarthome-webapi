@@ -21,7 +21,22 @@ namespace SmHm.Application.Services
                 {
                     throw new UnauthorizedAccessException("User ID not found in token.");
                 }
+
                 return userId;
+            }
+        }
+
+        public string UserName
+        {
+            get
+            {
+                var userNameClaim = _context.HttpContext?.User.FindFirst("userName")?.Value;
+                if (string.IsNullOrEmpty(userNameClaim))
+                {
+                    throw new UnauthorizedAccessException("UserName not found in token.");
+                }
+
+                return userNameClaim;
             }
         }
 

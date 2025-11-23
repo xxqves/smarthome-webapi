@@ -1,7 +1,7 @@
 ﻿using MassTransit;
 using SmHm.Contracts.Events.UserEvents;
 
-namespace SmHm.NotificationService.Consumers
+namespace SmHm.NotificationService.Consumers.Users
 {
     public class UserLoggedInConsumer : IConsumer<UserLoggedIn>
     {

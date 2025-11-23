@@ -36,7 +36,10 @@ namespace SmHm.Application.Services
 
             var userId = await _repository.Create(user, cancellationToken);
 
-            var @event = new UserRegistered(user.Id, user.Email, DateTime.UtcNow);
+            var @event = new UserRegistered(
+                user.Id, 
+                user.Email, 
+                DateTime.UtcNow);
 
             await _messageBus.PublishAsync(@event, cancellationToken);
 

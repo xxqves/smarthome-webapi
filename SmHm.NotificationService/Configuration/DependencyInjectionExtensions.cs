@@ -1,5 +1,6 @@
 ﻿using MassTransit;
 using Microsoft.Extensions.Options;
+using SmHm.NotificationService.Consumers.Devices;
 using SmHm.NotificationService.Consumers.Rooms;
 using SmHm.NotificationService.Consumers.Users;
 using SmHm.NotificationService.Messaging;
@@ -27,6 +28,8 @@ namespace SmHm.NotificationService.Configuration
 
                 cfg.AddConsumer<RoomCreatedConsumer>();
 
+                cfg.AddConsumer<DeviceCreatedConsumer>();
+
                 cfg.UsingRabbitMq((context, bus) =>
                 {
                     var options = context.GetRequiredService<IOptions<RabbitMqOptions>>().Value;
@@ -50,6 +53,11 @@ namespace SmHm.NotificationService.Configuration
                     bus.ReceiveEndpoint("notification_room_created_queue", e =>
                     {
                         e.ConfigureConsumer<RoomCreatedConsumer>(context);
+                    });
+
+                    bus.ReceiveEndpoint("notification_device_created_queue", e =>
+                    {
+                        e.ConfigureConsumer<DeviceCreatedConsumer>(context);
                     });
                 });
             });

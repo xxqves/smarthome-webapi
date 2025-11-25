@@ -14,14 +14,7 @@ namespace SmHm.NotificationService.Consumers.Rooms
 
         public Task Consume(ConsumeContext<RoomCreated> context)
         {
-            var roomId = context.Message.RoomId;
-            var roomType = context.Message.RoomType;
-            var userId = context.Message.UserId;
-            var userName = context.Message.UserName;
-
-            _logger.LogInformation($"Получено сообщение регистрации комнаты: " +
-                $"Пользователь с ID {userId} и именем {userName} добавил комнату в личный кабинет." +
-                $" ID комнаты: {roomId}, тип комнаты: {roomType}");
+            _logger.LogInformation($"Получено сообщение регистрации комнаты: {context.Message}");
 
             return Task.CompletedTask;
         }

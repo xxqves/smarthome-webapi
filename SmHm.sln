@@ -23,6 +23,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmHm.NotificationService", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmHm.Contracts", "SmHm.Contracts\SmHm.Contracts.csproj", "{16183856-5F57-499A-B6B9-720FC0736D5F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmHm.UnitTests", "SmHm.UnitTests\SmHm.UnitTests.csproj", "{94805F6E-8F92-44EE-9CAC-A5F192AF0080}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmHm.IntegrationTests", "SmHm.IntegrationTests\SmHm.IntegrationTests.csproj", "{CF4884D2-442E-4198-B2CA-7941C6E70945}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +61,14 @@ Global
 		{16183856-5F57-499A-B6B9-720FC0736D5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{16183856-5F57-499A-B6B9-720FC0736D5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{16183856-5F57-499A-B6B9-720FC0736D5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94805F6E-8F92-44EE-9CAC-A5F192AF0080}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94805F6E-8F92-44EE-9CAC-A5F192AF0080}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94805F6E-8F92-44EE-9CAC-A5F192AF0080}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94805F6E-8F92-44EE-9CAC-A5F192AF0080}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF4884D2-442E-4198-B2CA-7941C6E70945}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF4884D2-442E-4198-B2CA-7941C6E70945}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF4884D2-442E-4198-B2CA-7941C6E70945}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF4884D2-442E-4198-B2CA-7941C6E70945}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

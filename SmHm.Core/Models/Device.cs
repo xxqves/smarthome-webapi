@@ -1,4 +1,5 @@
 ﻿using SmHm.Core.Enums;
+using System.Runtime.InteropServices;
 
 namespace SmHm.Core.Models
 {
@@ -25,7 +26,7 @@ namespace SmHm.Core.Models
 
         public DeviceType DeviceType { get; }
 
-        public bool IsEnabled { get; } = false;
+        public bool IsEnabled { get; private set; } = false;
 
         public Guid RoomId { get; }
 
@@ -44,6 +45,18 @@ namespace SmHm.Core.Models
             var device = new Device(id, name, desc, deviceType, roomId);
 
             return device;
+        }
+
+        public void TurnOn()
+        {
+            if (IsEnabled)
+            {
+                IsEnabled = false;
+            }
+            else
+            {
+                IsEnabled = true;
+            }
         }
     }
 }

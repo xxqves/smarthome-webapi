@@ -33,6 +33,22 @@ namespace SmHm.Persistence.PostgreSql.Repositories
             return devices;
         }
 
+        public async Task<Device> GetById(Guid deviceId, CancellationToken cancellationToken = default)
+        {
+            var deviceEntity = await _context.Devices
+                .AsNoTracking()
+                .FirstOrDefaultAsync(d => d.Id == deviceId, cancellationToken);
+
+            var device = Device.Create(
+                deviceEntity!.Id,
+                deviceEntity.Name,
+                deviceEntity.Description,
+                deviceEntity.DeviceType,
+                deviceEntity.RoomId);
+
+            return device;
+        }
+
         public async Task<Guid> Create(Device device, CancellationToken cancellationToken = default)
         {
             var deviceEntity = new DeviceEntity
@@ -58,6 +74,20 @@ namespace SmHm.Persistence.PostgreSql.Repositories
                     .SetProperty(d => d.Name, d => name)
                     .SetProperty(d => d.Description, d => desc)
                     .SetProperty(d => d.DeviceType, d => deviceType)
+                    .SetProperty(d => d.RoomId, d => roomId), cancellationToken);
+
+            return id;
+        }
+
+        public async Task<Guid> Update(Guid id, string name, string desc, DeviceType deviceType, bool isEnabled, Guid roomId, CancellationToken cancellationToken = default)
+        {
+            await _context.Devices
+                .Where(d => d.Id == id)
+                .ExecuteUpdateAsync(s => s
+                    .SetProperty(d => d.Name, d => name)
+                    .SetProperty(d => d.Description, d => desc)
+                    .SetProperty(d => d.DeviceType, d => deviceType)
+                    .SetProperty(d => d.IsEnabled, d => isEnabled)
                     .SetProperty(d => d.RoomId, d => roomId), cancellationToken);
 
             return id;

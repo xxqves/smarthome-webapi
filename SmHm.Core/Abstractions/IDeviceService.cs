@@ -9,4 +9,5 @@ public interface IDeviceService
     Task<Guid> DeleteDevice(Guid id, CancellationToken cancellationToken = default);
     Task<List<Device>> GetAllDevices(CancellationToken cancellationToken = default);
     Task<Guid> UpdateDevice(Guid id, string name, string desc, DeviceType deviceType, Guid roomId, CancellationToken cancellationToken = default);
+    Task<Guid> TurnOn(Guid id, CancellationToken cancellationToken = default);
 }

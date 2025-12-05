@@ -11,14 +11,12 @@ namespace SmHm.Application.Services
         private readonly IDeviceRepository _repository;
         private readonly ICurrentUserService _currentUserService;
         private readonly IMessageBus _messageBus;
-        private readonly IRoomService _roomService;
 
-        public DeviceService(IDeviceRepository repository, ICurrentUserService currentUserService, IMessageBus messageBus, IRoomService roomService)
+        public DeviceService(IDeviceRepository repository, ICurrentUserService currentUserService, IMessageBus messageBus)
         {
             _repository = repository;
             _currentUserService = currentUserService;
             _messageBus = messageBus;
-            _roomService = roomService;
         }
 
         public async Task<List<Device>> GetAllDevices(CancellationToken cancellationToken = default)
@@ -49,6 +47,30 @@ namespace SmHm.Application.Services
         public async Task<Guid> DeleteDevice(Guid id, CancellationToken cancellationToken = default)
         {
             return await _repository.Delete(id, cancellationToken);
+        }
+
+        public async Task<Guid> TurnOn(Guid id, CancellationToken cancellationToken = default)
+        {
+            var device = await _repository.GetById(id, cancellationToken);
+
+            if (device == null)
+            {
+                throw new InvalidOperationException("Device not found!");
+            }
+
+            device.TurnOn();
+
+            await _repository.Update(
+                device.Id,
+                device.Name,
+                device.Description,
+                device.DeviceType,
+                device.IsEnabled,
+                device.RoomId,
+                cancellationToken
+                );
+
+            return device.Id;
         }
     }
 }

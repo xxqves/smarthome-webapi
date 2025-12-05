@@ -69,5 +69,13 @@ namespace SmHm.WebApi.Controllers
 
             return Ok(id);
         }
+
+        [HttpPut("devices/on/{id:guid}")]
+        public async Task<ActionResult<Guid>> EnableOnDevice(Guid id)
+        {
+            await _service.TurnOn(id);
+
+            return Ok(id);
+        }
     }
 }

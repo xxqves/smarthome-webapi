@@ -7,7 +7,7 @@ using SmHm.Core.Abstractions;
 using SmHm.Application.Services;
 using SmHm.Core.Abstractions.Messaging;
 
-namespace SmHm.UnitTests
+namespace SmHm.UnitTests.Devices
 {
     public class DeviceServiceTests
     {

@@ -1,5 +1,4 @@
 ﻿using SmHm.Core.Enums;
-using System.Runtime.InteropServices;
 
 namespace SmHm.Core.Models
 {

@@ -38,14 +38,56 @@ namespace SmHm.UnitTests.Devices
             // Arrange
             var longName = new string('a', nameLength);
 
-            // Act & Assert
-            Assert.Throws<ArgumentException>(() =>
-                Device.Create(
-                    Guid.NewGuid(),
-                    longName,
-                    "Description",
-                    DeviceType.SmartLight,
-                    Guid.NewGuid()));
+            // Act
+            Action act = () => Device.Create(
+                Guid.NewGuid(),
+                longName,
+                "Description",
+                DeviceType.SmartLight,
+                Guid.NewGuid()
+            );
+
+            // Assert
+            act.Should().Throw<ArgumentException>();
+        }
+
+        [Theory]
+        [InlineData(151)]
+        [InlineData(300)]
+        public void Create_WithTooLongDescription_ThrowsArgumentException(int length)
+        {
+            var longDesc = new string('b', length);
+
+            Action act = () => Device.Create(
+                Guid.NewGuid(),
+                "Name",
+                longDesc,
+                DeviceType.SmartLight,
+                Guid.NewGuid()
+            );
+
+            act.Should().Throw<ArgumentException>();
+        }
+
+        [Fact]
+        public void TurnOn_WhenOff_ShouldTurnOn()
+        {
+            var device = Device.Create(Guid.NewGuid(), "Name", "Desc", DeviceType.SmartLight, Guid.NewGuid());
+
+            device.TurnOn();
+
+            device.IsEnabled.Should().BeTrue();
+        }
+
+        [Fact]
+        public void TurnOn_WhenOn_ShouldTurnOff()
+        {
+            var device = Device.Create(Guid.NewGuid(), "Name", "Desc", DeviceType.SmartLight, Guid.NewGuid());
+            device.TurnOn(); // now ON
+
+            device.TurnOn(); // toggle → OFF
+
+            device.IsEnabled.Should().BeFalse();
         }
     }
 }

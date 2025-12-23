@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using SmHm.WebApi.Contracts.Devices;
 using SmHm.WebApi.Contracts.Rooms;
 
 namespace SmHm.WebApi.Contracts.Validators.Rooms
@@ -21,7 +22,7 @@ namespace SmHm.WebApi.Contracts.Validators.Rooms
                 .MaximumLength(MAX_DESCRIPTION_LENGTH).WithMessage($"'{nameof(RoomRequest.Description)}' must not exceed {MAX_DESCRIPTION_LENGTH} characters.");
 
             RuleFor(x => x.RoomType)
-                .NotEmpty().WithMessage($"'{nameof(RoomRequest.RoomType)}' is required.");
+                .IsInEnum().WithMessage($"'{nameof(RoomRequest.RoomType)}' has invalid value.");
 
             RuleFor(x => x.Floor)
                 .NotEmpty().WithMessage($"'{nameof(RoomRequest.Floor)}' is required.")

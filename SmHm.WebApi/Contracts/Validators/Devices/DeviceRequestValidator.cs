@@ -19,7 +19,7 @@ namespace SmHm.WebApi.Contracts.Validators.Devices
                 .MaximumLength(MAX_DESCRIPTION_LENGTH).WithMessage($"'{nameof(DeviceRequest.Description)}' must not exceed {MAX_DESCRIPTION_LENGTH} characters.");
 
             RuleFor(x => x.DeviceType)
-                .NotEmpty().WithMessage($"'{nameof(DeviceRequest.DeviceType)}' is required.");
+                .IsInEnum().WithMessage($"'{nameof(DeviceRequest.DeviceType)}' has invalid value.");
 
             RuleFor(x => x.RoomId)
                 .NotEmpty().WithMessage($"'{nameof(DeviceRequest.RoomId)}' is required.");

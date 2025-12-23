@@ -19,7 +19,11 @@ namespace SmHm.WebApi
             using (var scope = app.Services.CreateScope())
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<SmartHomeDbContext>();
-                dbContext.Database.Migrate();
+
+                if (app.Environment.IsDevelopment())
+                {
+                    dbContext.Database.Migrate();
+                }
             }
 
             app.Run();

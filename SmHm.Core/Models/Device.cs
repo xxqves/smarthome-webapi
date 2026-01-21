@@ -46,16 +46,14 @@ namespace SmHm.Core.Models
             return device;
         }
 
-        public void TurnOn()
+        public void Enable()
         {
-            if (IsEnabled)
-            {
-                IsEnabled = false;
-            }
-            else
-            {
-                IsEnabled = true;
-            }
+            IsEnabled = true;
+        }
+
+        public void Disable()
+        {
+            IsEnabled = false;
         }
     }
 }

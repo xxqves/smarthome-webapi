@@ -49,7 +49,7 @@ namespace SmHm.Application.Services
             return await _repository.Delete(id, cancellationToken);
         }
 
-        public async Task<Guid> TurnOn(Guid id, CancellationToken cancellationToken = default)
+        public async Task<Guid> EnableDevice(Guid id, CancellationToken cancellationToken = default)
         {
             var device = await _repository.GetById(id, cancellationToken);
 
@@ -58,7 +58,7 @@ namespace SmHm.Application.Services
                 throw new InvalidOperationException("Device not found!");
             }
 
-            device.TurnOn();
+            device.Enable();
 
             await _repository.Update(
                 device.Id,
@@ -68,7 +68,31 @@ namespace SmHm.Application.Services
                 device.IsEnabled,
                 device.RoomId,
                 cancellationToken
-                );
+            );
+
+            return device.Id;
+        }
+
+        public async Task<Guid> DisableDevice(Guid id, CancellationToken cancellationToken = default)
+        {
+            var device = await _repository.GetById(id, cancellationToken);
+
+            if (device == null)
+            {
+                throw new InvalidOperationException("Device not found!");
+            }
+
+            device.Disable();
+
+            await _repository.Update(
+                device.Id,
+                device.Name,
+                device.Description,
+                device.DeviceType,
+                device.IsEnabled,
+                device.RoomId,
+                cancellationToken
+            );
 
             return device.Id;
         }

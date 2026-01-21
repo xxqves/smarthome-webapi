@@ -8,7 +8,7 @@ namespace SmHm.WebApi.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("api/")]
+    [Route("api/devices")]
     public class DeviceController : ControllerBase
     {
         private readonly IDeviceService _service;
@@ -18,7 +18,7 @@ namespace SmHm.WebApi.Controllers
             _service = service;
         }
 
-        [HttpGet("devices/get/all")]
+        [HttpGet]
         public async Task<ActionResult<List<DeviceResponse>>> GetDevices()
         {
             var devices = await _service.GetAllDevices();
@@ -34,7 +34,7 @@ namespace SmHm.WebApi.Controllers
             return Ok(response);
         }
 
-        [HttpPost("devices/add")]
+        [HttpPost]
         public async Task<ActionResult<Guid>> CreateDevice([FromBody] DeviceRequest request)
         {
             var device = Device.Create(
@@ -49,7 +49,7 @@ namespace SmHm.WebApi.Controllers
             return Ok(device.Id);
         }
 
-        [HttpPut("devices/update/{id:guid}")]
+        [HttpPut("{id:guid}")]
         public async Task<ActionResult<Guid>> UpdateDevice(Guid id, [FromBody] DeviceRequest request)
         {
             await _service.UpdateDevice(
@@ -62,7 +62,7 @@ namespace SmHm.WebApi.Controllers
             return Ok(id);
         }
 
-        [HttpDelete("devices/delete/{id:guid}")]
+        [HttpDelete("{id:guid}")]
         public async Task<ActionResult<Guid>> DeleteDevice(Guid id)
         {
             await _service.DeleteDevice(id);
@@ -70,10 +70,18 @@ namespace SmHm.WebApi.Controllers
             return Ok(id);
         }
 
-        [HttpPut("devices/on/{id:guid}")]
-        public async Task<ActionResult<Guid>> EnableOnDevice(Guid id)
+        [HttpPatch("{id:guid}/enable")]
+        public async Task<ActionResult<Guid>> EnableDevice(Guid id)
         {
-            await _service.TurnOn(id);
+            await _service.EnableDevice(id);
+
+            return Ok(id);
+        }
+
+        [HttpPatch("{id:guid}/disable")]
+        public async Task<ActionResult<Guid>> DisableDevice(Guid id)
+        {
+            await _service.DisableDevice(id);
 
             return Ok(id);
         }

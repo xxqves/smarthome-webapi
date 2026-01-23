@@ -8,7 +8,7 @@ namespace SmHm.WebApi.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("api/")]
+    [Route("api/rooms")]
     public class RoomController : ControllerBase
     {
         private readonly IRoomService _service;
@@ -20,7 +20,7 @@ namespace SmHm.WebApi.Controllers
             _currUserService = currUserService;
         }
 
-        [HttpGet("rooms/get/all")]
+        [HttpGet]
         public async Task<ActionResult<List<RoomResponse>>> GetRooms()
         {
             var rooms = await _service.GetAllRooms();
@@ -37,7 +37,7 @@ namespace SmHm.WebApi.Controllers
             return Ok(response);
         }
 
-        [HttpPost("rooms/add")]
+        [HttpPost]
         public async Task<ActionResult<Guid>> CreateRoom([FromBody] RoomRequest request)
         {
             var userId = _currUserService.UserId;
@@ -56,7 +56,7 @@ namespace SmHm.WebApi.Controllers
             return Ok(room.Id);
         }
 
-        [HttpPut("rooms/update/{id:guid}")]
+        [HttpPut("{id:guid}")]
         public async Task<ActionResult<Guid>> UpdateRoom(Guid id, [FromBody] RoomRequest request)
         {
             await _service.UpdateRoom(
@@ -69,7 +69,7 @@ namespace SmHm.WebApi.Controllers
             return Ok(id);
         }
 
-        [HttpDelete("rooms/delete/{id:guid}")]
+        [HttpDelete("{id:guid}")]
         public async Task<ActionResult<Guid>> DeleteRoom(Guid id)
         {
             await _service.DeleteRoom(id);

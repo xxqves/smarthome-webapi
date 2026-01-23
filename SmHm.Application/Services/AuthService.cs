@@ -46,7 +46,7 @@ namespace SmHm.Application.Services
             return userId;
         }
                 
-        public async Task<string> Login(string email, string password, CancellationToken cancellationToken = default)
+        public async Task<(Guid userId, string token, string userName)> Login(string email, string password, CancellationToken cancellationToken = default)
         {
             if (_currentUserService.IsAuthenticated)
             {
@@ -68,7 +68,7 @@ namespace SmHm.Application.Services
 
             await _messageBus.PublishAsync(@event, cancellationToken);
 
-            return token;
+            return (user.Id, token, user.UserName);
         }
     }
 }

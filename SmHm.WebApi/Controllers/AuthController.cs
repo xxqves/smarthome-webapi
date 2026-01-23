@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SmHm.Core.Abstractions;
+using SmHm.WebApi.Contracts.Auth;
 using SmHm.WebApi.Contracts.Users;
 
 namespace SmHm.WebApi.Controllers
@@ -18,19 +19,41 @@ namespace SmHm.WebApi.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<Guid>> RegisterUser([FromBody] RegisterRequest request)
+        public async Task<ActionResult<RegisterResponse>> RegisterUser([FromBody] RegisterRequest request)
         {
-            return await _service.Register(request.UserName, request.Email, request.Password);
+            var userId = await _service.Register(
+                request.UserName,
+                request.Email,
+                request.Password
+            );
+
+            var response = new RegisterResponse(
+                userId,
+                request.Email,
+                request.UserName
+            );
+
+            return Created(
+                $"/api/users/{userId}",
+                response
+            );
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult> Login([FromBody] LoginRequest request)
+        public async Task<ActionResult<LoginResponse>> Login([FromBody] LoginRequest request)
         {
-            var token = await _service.Login(request.Email, request.Password);
+            var (userId, token, userName) = await _service.Login(request.Email, request.Password);
 
             _context.HttpContext!.Response.Cookies.Append("jwt-service-staff", token);
 
-            return Ok();
+            var response = new LoginResponse(
+                userId,
+                token,
+                request.Email,
+                userName
+            );
+
+            return Ok(response);
         }
 
         [HttpPost("logout")]

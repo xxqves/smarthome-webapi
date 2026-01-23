@@ -1,6 +1,7 @@
 ﻿namespace SmHm.WebApi.Contracts.Users
 {
-    public record LoginUserRequest(
+    public record RegisterRequest(
+        string UserName,
         string Email,
         string Password);
 }

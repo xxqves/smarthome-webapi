@@ -6,7 +6,7 @@ using SmHm.Core.Models;
 
 namespace SmHm.Application.Services
 {
-    public class UserService : IUserService
+    public class AuthService : IAuthService
     {
         private readonly IUserRepository _repository;
         private readonly ICurrentUserService _currentUserService;
@@ -14,7 +14,7 @@ namespace SmHm.Application.Services
         private readonly IJwtProvider _jwtProvider;
         private readonly IMessageBus _messageBus;
 
-        public UserService(IUserRepository repository, ICurrentUserService currentUserService, IPasswordHasher passwordHasher, IJwtProvider jwtProvider, IMessageBus messageBus)
+        public AuthService(IUserRepository repository, ICurrentUserService currentUserService, IPasswordHasher passwordHasher, IJwtProvider jwtProvider, IMessageBus messageBus)
         {
             _repository = repository;
             _currentUserService = currentUserService;
